@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var charactersvm = DetailsViewModel()
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(charactersvm.characterData) { character in
+                    NavigationLink {
+                        Details(character: character)
+                    }
+                label: {
+                    Text(character.name)
+                }
+                }
+                
+                
+            }.onAppear {
+                charactersvm.fetchCharacters()
+            }
+            .navigationTitle("Characters")
         }
-        .padding()
     }
 }
 
